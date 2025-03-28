@@ -1,38 +1,37 @@
 pipeline {
-    agent any
-
-    stages {
-        stage('Checkout') {
-            steps {
-                // Checkout the code from GitHub
-                git 'https://github.com/anagha1112/Newrepo.git'
+    agent { 
+        node {
+            label 'docker-agent-python'
             }
-        }
-
+      }
+    triggers {
+        pollSCM '* * * * *'
+    }
+    stages {
         stage('Build') {
             steps {
-                echo 'Building...'
+                echo "Building.."
+                sh '''
+                cd myapp
+                pip install -r requirements.txt
+                '''
             }
         }
-
-        stage('Run Python Script') {
-            steps {
-                echo 'Running Python Script...'
-                
-                bat 'python helloworld.py'
-                
-            }
-        }
-
         stage('Test') {
             steps {
-                echo 'Testing...'
+                echo "Testing.."
+                sh '''
+                python3 helloworld.py
+                python3 helloworld.py --name=Brad
+                '''
             }
         }
-
-        stage('Deploy') {
+        stage('Deliver') {
             steps {
-                echo 'Deploying...'
+                echo 'Deliver....'
+                sh '''
+                echo "doing delivery stuff.."
+                '''
             }
         }
     }
