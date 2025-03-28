@@ -1,5 +1,10 @@
 pipeline {
-    agent any
+    agent {
+        docker {
+            image 'python:3.9'  // Using Python 3.9 Docker image
+            label 'docker'      // Optional: specify this if your node has the Docker label
+        }
+    }
     triggers {
         pollSCM('* * * * *')
     }
