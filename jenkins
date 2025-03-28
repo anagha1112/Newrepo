@@ -1,31 +1,20 @@
 pipeline {
-    agent { 
-        node {
-            label 'docker-agent-python'
-        }
+  agent any
+  stages {
+    stage('Build') {
+      steps {
+        echo 'Building...'
+      }
     }
-    triggers {
-        pollSCM('* * * * *')  // Polling can be disabled if unnecessary
+    stage('Test') {
+      steps {
+        echo 'Testing...'
+      }
     }
-    stages {
-        stage('Build') {
-            steps {
-                echo "No build step necessary for Hello World."
-            }
-        }
-        stage('Test') {
-            steps {
-                echo "Testing Hello World Python script.."
-                sh '''
-                cd myapp
-                python3 helloworld.py     # Run helloworld.py
-                '''
-            }
-        }
-        stage('Deliver') {
-            steps {
-                echo 'No delivery steps required for Hello World script.'
-            }
-        }
+    stage('Deploy') {
+      steps {
+        echo 'Deploying...'
+      }
     }
+  }
 }
